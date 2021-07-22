@@ -1,4 +1,6 @@
 'use strict';
+// Default debugging port is 8696. http://localhost:8696
+// Server port is http://localhost:4000
 
 // Wrap everything in an anonymous function to avoid poluting the global namespace
 (function () {
@@ -6,9 +8,9 @@
   let unregisterHandlerFunctions = [];
 
   let fontSettings = {
-    size: 14,
+    size: 12,
     color: '#000000',
-    x: 10,
+    x: 5,
     y: -10
   }
   let tierSettings = {
@@ -171,15 +173,15 @@
       let timeAnimationFull = 2 * valueTarget / valueCurrent
       let curve = d3.line().curve(d3.curveNatural);
           
-      for(const tier in tierSettings.tier ) {
-          tierArray.push(tierSettings.tier[tier])
-          tierText.push(`${ tierSettings.tier[tier] + 1} `+ `(${ tierPercent[j] })`)
-          j++
+      for(const tier in tierSettings ) {
+        tierArray.push(tierSettings[tier])
+        tierText.push(`${ tierSettings[tier] + 1} `+ `(${ tierPercent[j] })`)
+        j++
       }
       
       nextTierIndex = tierArray.findIndex( value => {
-          if(value <= valueCurrent) return false 
-          else return value >= valueCurrent
+        if(value <= valueCurrent) return false 
+        else return value >= valueCurrent
       })
 
       nextTierIndex == -1 ? nextTierIndex = 5 : ''
