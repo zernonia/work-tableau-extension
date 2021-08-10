@@ -37,8 +37,8 @@
     var marker = container.append('svg')
     var markerG = container.append('g')
 
-    let width = window.innerWidth - 10
-    let height = window.innerHeight - 10
+    let width = window.innerWidth - 20
+    let height = window.innerHeight - 20
 
     let curve = d3.line().curve(d3.curveNatural);
     let tier0 = [25, height - 15]
@@ -55,11 +55,12 @@
     tableau.extensions.initializeAsync().then(function () {
       // Get worksheets from tableau dashboard
       let extensionViewport = tableau.extensions.dashboardContent.dashboard.objects[0].size
-      width = extensionViewport.width
-      height = extensionViewport.height
+      // width = extensionViewport.width
+      // height = extensionViewport.height
 
-      worksheet1 = tableau.extensions.dashboardContent.dashboard.worksheets[0];
+      worksheet1 = tableau.extensions.dashboardContent.dashboard.worksheets[tableau.extensions.dashboardContent.dashboard.worksheets.findIndex(i => i.name == 'Sheet 1')];
       console.log(tableau.extensions.dashboardContent.dashboard)
+
 
       function getDataAndPlotChart() {
         // load data from worksheet
@@ -67,6 +68,7 @@
         let dataSingle = 0; // because we only consider single value this time
         worksheet1.getSummaryDataAsync().then(data => {
           let dataJson;
+          console.log(data.data)
           data.data.map(d => {
             dataJson = {};
             dataJson[data.columns[0].fieldName] = d[0].value; //FSC id
@@ -87,7 +89,7 @@
       function filterChangedHandler(event) {
         // for filter change
         // Add fieldName with (||) for other filters
-        if (event.fieldName === "Action (Sales Staff ID)") {
+        if (event.fieldName === "Sales Staff Name") {
           // reload summary data
           // console.log(event)
           getDataAndPlotChart();
